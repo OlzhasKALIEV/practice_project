@@ -3,7 +3,7 @@ from typing import List
 import requests
 
 from tests.rest.core.http_client import HttpClient
-from tests.rest.models.models import IngredientResponseDto, IngredientRequestDto
+from tests.rest.models.model import IngredientResponseDto, IngredientRequestDto
 
 
 class IngredientsAPI(HttpClient):

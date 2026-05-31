@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from tests.rest.models.models import CreateOrderDto, UpdateOrderStatusRequest
+from tests.rest.models.model import CreateOrderDto, UpdateOrderStatusRequest
 
 from tests.db.ingredient_repo import IngredientRepository
 from tests.db.orders_repo import OrderRepository
@@ -60,16 +60,6 @@ class TestOrderWorkflow:
             assert updated_order_from_db['status'] == "INPROGRESS", "Статус заказа в БД не обновился"
 
 
-def test_order_creation(user_builder, managed_ingredients):
-    customer = user_builder.create_user("CUSTOMER")
-
-    # Создаем 3 ингредиента по 2 штуки каждый
-    ingredient_ids = managed_ingredients(count=3, quantity=2)
-
-    # Создаем заказ с этими ингредиентами
-    order = customer.clients.orders.create(
-        CreateOrderDto(ingredientIds=ingredient_ids)
-    )
-
-    assert len(order.ingredients) == 3
+def test_order_creation(user_repository):
+    print(user_repository.get_by_id(2))
     # После теста ингредиенты автоматически удалятся

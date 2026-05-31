@@ -1,7 +1,7 @@
 import requests
 
 from tests.rest.core.http_client import HttpClient
-from tests.rest.models.models import PageNotificationDto
+from tests.rest.models.model import PageNotificationDto
 
 
 class NotificationsAPI(HttpClient):

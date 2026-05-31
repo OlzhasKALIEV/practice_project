@@ -3,7 +3,7 @@ from typing import List
 import requests
 
 from tests.rest.core.http_client import HttpClient
-from tests.rest.models.models import UserResponseDto, UserRequestDto, PagedResponseUserResponseDto
+from tests.rest.models.model import UserResponseDto, UserRequestDto, PagedResponseUserResponseDto
 
 
 class UsersAPI(HttpClient):

@@ -28,15 +28,17 @@ class DbExecutor:
         if hasattr(self, '_initialized'):
             return
 
-        # Используем переменную окружения или значение по умолчанию
         db_url = os.getenv(
             "DATABASE_URL",
-            "postgresql+psycopg2://coffee:coffee@localhost:5432/coffeehouse?client_encoding=utf8"
+            "postgresql+psycopg2://coffee:coffee@localhost:5432/coffeehouse",
         )
         self.engine = create_engine(
-            "postgresql+psycopg2://coffee:coffee@localhost:5432/coffeehouse",
+            db_url,
             pool_pre_ping=True,
-            echo=False
+            echo=False,
+            connect_args={
+                "client_encoding": "utf8",
+            },
         )
         self._initialized = True
 

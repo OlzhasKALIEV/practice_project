@@ -4,7 +4,7 @@ from faker import Faker
 from tests.db.user_repo import UserRepository
 from tests.helpers.client_factory import ClientFactory
 from tests.rest.clients.auth_client import AuthAPI
-from tests.rest.models.models import UserResponseDto, RegisterRequest, AuthRequest
+from tests.rest.models.model import UserResponseDto, RegisterRequest, AuthRequest
 
 
 class User:

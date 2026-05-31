@@ -1,5 +1,5 @@
 from tests.rest.core.http_client import HttpClient
-from tests.rest.models.models import CreateOrderDto, CoffeeOrderResponse, PageCoffeeOrderResponse, \
+from tests.rest.models.model import CreateOrderDto, CoffeeOrderResponse, PageCoffeeOrderResponse, \
     UpdateOrderStatusRequest
 
 

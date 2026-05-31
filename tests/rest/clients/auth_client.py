@@ -1,5 +1,5 @@
 from tests.rest.core.http_client import HttpClient
-from tests.rest.models.models import RegisterRequest, UserResponseDto, AuthRequest, AuthFullResponse
+from tests.rest.models.model import RegisterRequest, UserResponseDto, AuthRequest, AuthFullResponse
 
 
 class AuthAPI(HttpClient):
