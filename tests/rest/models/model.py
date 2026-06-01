@@ -90,7 +90,6 @@ class MessageRequestDto(BaseModel):
 class MessageResponseDto(BaseModel):
     id: int | None = None
     content: str | None = None
-    sentAt: AwareDatetime | None = None
     sender: UserDto | None = None
     receiver: UserDto | None = None
 

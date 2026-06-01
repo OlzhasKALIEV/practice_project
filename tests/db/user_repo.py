@@ -26,3 +26,10 @@ class UserRepository(BaseRepository):
         """Получает всех пользователей с определенной ролью."""
         rows = self._db.fetchall("SELECT * FROM users WHERE role = :role", {"role": role.upper()})
         return self._rows_to_dicts(rows)
+
+    def delete_by_id(self, user_id: int) -> None:
+        """Удаляет пользователя по ID."""
+        self._db.execute(
+            "DELETE FROM users WHERE id = :id",
+            {"id": user_id}
+        )

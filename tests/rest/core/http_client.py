@@ -2,7 +2,7 @@ import allure
 import json
 import logging
 import requests
-from typing import Union, Type, TypeVar, Any, get_origin, get_args
+from typing import Union, Type, TypeVar, Any
 from allure_commons.types import AttachmentType
 from pydantic import BaseModel, ValidationError, TypeAdapter
 

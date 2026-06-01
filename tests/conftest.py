@@ -6,16 +6,20 @@ from faker import Faker
 
 from tests.db.db_executor import DbExecutor
 from tests.db.ingredient_repo import IngredientRepository
+from tests.db.message_repo import MessageRepository
 from tests.db.orders_repo import OrderRepository
 from tests.db.user_repo import UserRepository
 from tests.helpers.user_builder import UserBuilder
 from tests.rest.clients.auth_client import AuthAPI
-from tests.rest.models.model import IngredientRequestDto
+from tests.rest.clients.message_client import MessagesAPI
+from tests.rest.clients.users_client import UsersAPI
+from tests.rest.models.model import IngredientRequestDto, AuthRequest
 
 
 @pytest.fixture(scope="session")
 def base_url():
     return "http://localhost:8080"
+
 
 @pytest.fixture(scope="session")
 def professional_db_executor():
@@ -26,8 +30,71 @@ def faker_instance():
     return Faker()
 
 @pytest.fixture(scope="session")
+def auth_api_client(base_url):
+    return AuthAPI(base_url)
+
+@pytest.fixture(scope="session")
 def user_repository(professional_db_executor):
     return UserRepository(professional_db_executor)
+
+@pytest.fixture(scope="session")
+def message_repository(professional_db_executor):
+    return MessageRepository(professional_db_executor)
+
+@pytest.fixture
+def temp_user(user_builder, user_repository):
+    user = user_builder.create_user("ADMIN")
+    yield user
+    user_repository.delete_by_id(user.id)
+
+@pytest.fixture
+def auth_token(auth_api_client, temp_user):
+    return auth_api_client.login(
+        AuthRequest(
+            username=temp_user.details.username,
+            password=temp_user.password
+        )
+    ).token
+
+@pytest.fixture
+def users_api(base_url, auth_token):
+    return UsersAPI(base_url, token=auth_token)
+
+@pytest.fixture
+def message_api(base_url, auth_token):
+    return MessagesAPI(base_url, token=auth_token)
+
+
+@pytest.fixture
+def create_user(user_builder, user_repository):
+    user = user_builder.create_user("ADMIN")
+    return user
+
+@pytest.fixture
+def delete_users(user_builder, user_repository):
+    user_ids = []
+    yield user_ids
+    for user_id in user_ids:
+        user_repository.delete_by_id(user_id)
+
+
+@pytest.fixture
+def create_messages(temp_user, message_repository, faker_instance):
+    message_repository.create_by_id(
+        sender_id=temp_user.id,
+        receiver_id=temp_user.id,
+        content=faker_instance.text()
+    )
+    yield temp_user
+
+@pytest.fixture
+def delete_messages(message_repository):
+    message_ids = []
+    yield message_ids
+
+    for mid in message_ids:
+        message_repository.delete_by_id(mid)
+
 
 @pytest.fixture(scope="session")
 def ingredient_repository(professional_db_executor):
@@ -37,9 +104,6 @@ def ingredient_repository(professional_db_executor):
 def order_repository(professional_db_executor):
     return OrderRepository(professional_db_executor)
 
-@pytest.fixture(scope="session")
-def auth_api_client(base_url):
-    return AuthAPI(base_url)
 
 @pytest.fixture
 def user_builder(auth_api_client, user_repository, base_url) -> UserBuilder:

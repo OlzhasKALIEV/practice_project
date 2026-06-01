@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 import allure
 from faker import Faker
 from tests.db.user_repo import UserRepository
@@ -56,7 +56,7 @@ class UserBuilder:
 
         # Шаг 1: Генерируем уникальные данные для регистрации
         reg_request = RegisterRequest(
-            username=f"{role.lower()}_{self._faker.user_name()}_{datetime.now().microsecond}",
+            username=f"{role.lower()}_{self._faker.user_name()}_{datetime.now(timezone.utc).timestamp()}",
             email=self._faker.email(),
             password=self._faker.password(length=12)
         )
